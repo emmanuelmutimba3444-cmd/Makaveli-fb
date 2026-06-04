@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dating Gateway</title>
+    <style>
+        :root {
+            --bg-color: #0f0f12;
+            --card-bg: #18181f;
+            --accent-color: #ff3b6c;
+            --accent-hover: #e02856;
+            --mpesa-green: #49c513;
+            --text-main: #ffffff;
+            --text-muted: #a0a0b0;
+            --border-color: #2a2a35;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn.btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .btn.btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .payment-box {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 24px 15px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--mpesa-green);
+            margin: 10px 0;
+        }
+
+        .phone-number {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #ffffff;
+            background: #22222b;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .upload-box {
+            border: 2px dashed var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.01);
+            margin-bottom: 24px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-box:hover {
+            border-color: var(--accent-color);
+        }
+
+        .upload-box input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .preview-text {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .telegram-link {
+            display: inline-block;
+            background-color: #24A1DE;
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .telegram-link:hover {
+            background-color: #1d84b5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Step 1 & 2: Welcome & Age Verification -->
+        <div id="step1" class="step active">
+            <h2>Welcome</h2>
+            <p>You must be 18 years or older to access this platform. Please verify your age to continue.</p>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="exitRoute()">Under 18</button>
+                <button class="btn" onclick="nextStep(2)">I am 18+</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Proceed Consent -->
+        <div id="step2" class="step">
+            <h2>Welcome to our dating page</h2>
+            <p>Do you wish to proceed to match with profiles in your area?</p>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="exitRoute()">No</button>
+                <button class="btn" onclick="nextStep(3)">Yes</button>
+            </div>
+        </div>
+
+        <!-- Step 4: M-Pesa Instructions -->
+        <div id="step3" class="step">
+            <h2>Service Fee Required</h2>
+            <p>Please send the verification fee via M-Pesa to the number below:</p>
+            <div class="payment-box">
+                <div>Amount Due:</div>
+                <div class="amount">Ksh. 20</div>
+                <div style="margin-top: 15px; font-size: 14px; color: var(--text-muted);">Send to M-Pesa Number:</div>
+                <div class="phone-number">0717441157</div>
+            </div>
+            <button class="btn" onclick="nextStep(4)">I Have Made Payment</button>
+        </div>
+
+        <!-- Step 4b: Share Screenshot -->
+        <div id="step4" class="step">
+            <h2>Verify Payment</h2>
+            <p>Please upload a screenshot of your M-Pesa transaction receipt to unlock access.</p>
+            
+            <div class="upload-box" id="uploadContainer">
+                <span class="preview-text" id="uploadText">📁 Click to choose or drag screenshot</span>
+                <input type="file" id="screenshotInput" accept="image/*" onchange="handleFileSelect(this)">
+            </div>
+
+            <button class="btn" id="submitPaymentBtn" onclick="submitPayment()" disabled style="opacity: 0.5; cursor: not-allowed;">
+                Submit Screenshot
+            </button>
+        </div>
+
+        <!-- Step 5: Telegram Link Provide -->
+        <div id="step5" class="step">
+            <h2>Verification Submitted!</h2>
+            <p>Your payment details have been received. Click below to access the Telegram channel.</p>
+            
+            <!-- Embeded active Telegram Channel Link -->
+            <a href="https://t.me/+PAwtwFEphl9mNjA0" target="_blank" class="telegram-link" onclick="setupExitDelay()">
+                Join Telegram Channel
+            </a>
+            <p style="font-size: 12px; margin-bottom: 0; color: var(--text-muted);">Your session will close automatically after clicking.</p>
+        </div>
+
+        <!-- Step 6: Visual Website Closure -->
+        <div id="stepExit" class="step">
+            <h2>Session Ended</h2>
+            <p>Thank you for visiting. Your session has been safely closed. You can now close this tab.</p>
+        </div>
+
+    </div>
+
+    <script>
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById('step' + stepNumber).classList.add('active');
+        }
+
+        function handleFileSelect(input) {
+            const uploadText = document.getElementById('uploadText');
+            const submitBtn = document.getElementById('submitPaymentBtn');
+            
+            if (input.files && input.files[0]) {
+                uploadText.textContent = "✅ " + input.files[0].name;
+                uploadText.style.color = "#49c513";
+                
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = "1";
+                submitBtn.style.cursor = "pointer";
+            }
+        }
+
+        function submitPayment() {
+            nextStep(5);
+        }
+
+        function exitRoute() {
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById('stepExit').classList.add('active');
+        }
+
+        function setupExitDelay() {
+            setTimeout(() => {
+                exitRoute();
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
